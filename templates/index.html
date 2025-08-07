@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - Discover Your Next Read</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a5acd;
+            --secondary: #9370db;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            height: 250px;
+            object-fit: contain;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--dark);
+            height: 50px;
+            overflow: hidden;
+        }
+
+        .card-author {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .rating {
+            color: #f39c12;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #5d4cb3;
+            border-color: #5d4cb3;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .hero,
+        body.dark-mode .card,
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.8);
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .card-title {
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .card-author {
+            color: #bdc3c7;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/" style="font-weight: 700; color: var(--primary);">
+                <i class="fas fa-book-open"></i> BookVerse
+            </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <button id="darkModeToggle" class="btn btn-default">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="hero text-center">
+        <h1 style="font-weight: 700;"><i class="fas fa-book-reader"></i> Discover Your Next Adventure</h1>
+        <p class="lead">Find perfect book recommendations based on your preferences</p>
+        <a href="/recommend" class="btn btn-primary btn-lg">
+            <i class="fas fa-search"></i> Find Recommendations
+        </a>
+    </div>
+
+    <h2 class="text-center" style="margin: 40px 0 30px; font-weight: 600;">Popular Books</h2>
+    <div class="row">
+        {% for i in range(book_name|length) %}
+        <div class="col-md-3 col-sm-6">
+            <div class="card">
+                <img class="card-img-top" src="{{ image[i] }}" alt="{{ book_name[i] }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book_name[i] }}</h5>
+                    <p class="card-author">By {{ author[i] }}</p>
+                    <div class="rating">
+                        {% for star in range(5) %}
+                            {% if star < rating[i]|round|int %}
+                                <i class="fas fa-star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span>({{ votes[i] }})</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<footer class="text-center">
+    <div class="container">
+        <p>&copy; {{ current_year }} BookVerse. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script>
+    // Dark mode toggle
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.querySelector('#darkModeToggle i');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    }
+
+    // Check for saved dark mode preference
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('#darkModeToggle i').classList.replace('fa-moon', 'fa-sun');
+    }
+
+    document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+</script>
+</body>
+</html>
